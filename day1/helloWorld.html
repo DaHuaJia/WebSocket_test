@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>WebSocket</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			// 创建websocket对象
+			var ws = new WebSocket("ws://localhost:1234/");
+			
+			ws.onopen = function(res){
+				console.log("连接成功。");
+				console.log(res);
+			}
+			
+			ws.onmessage = function(res){
+				console.log("服务器数据发送数据");
+				console.log(res);
+			}
+		</script>
+	</body>
+</html>
