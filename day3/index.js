@@ -5,17 +5,22 @@ var io = require("socket.io")(server)
 
 // socket.io 
 io.on("connection", function(socket){
-	// 向客户端发送一个消息
-	socket.emit("msg", "dasfs");
 	
-	// 向所有客户端发送消息
-	setInterval(function(){
-		io.emit("broadcast", "hello world. "+(new Date()));
-	}, 1000);
-	
-	socket.on("reply", function(){
-		
+	// 监听客户端的login 事件
+	socket.on("login", function(data){
+		// 给当前连接设置用户名
+		socket.username = data;
+		console.log(socket.username+" 登录成功");
+		// 给当前用户返回状态码
+		socket.emit("msg", {code: 200});
 	});
+	
+	// 监听客户端 mySend 事件
+	socket.on("mySend", function(data){
+		// 给所有客户端发送msg 推送
+		io.emit("msg", {code: 0, user: socket.username, msg: data});
+	});
+	
 });
 
 // 静态文件中间件, 对于静态文件的路由过滤，不进行代理
